@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التسجيل - SYTIX</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/header.css">
+    <style>
+        body {
+            padding-top: 60px; /* إضافة تباعد أعلى للجسم لتجنب تداخل الهيدر */
+        }
+        .register-form {
+            background-color: var(--card-background);
+            border-radius: 10px;
+            padding: 2rem;
+            max-width: 400px;
+            margin: 2rem auto;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+        .form-group input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--card-border);
+            border-radius: 5px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        .box {
+            width: 100%;
+            height: 50px;
+            transition: 1s linear;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            padding: 0;
+            text-align: center;
+            background: transparent;
+            text-transform: uppercase;
+            font-weight: 900;
+            border-radius: 5px;
+            margin-top: 1rem;
+        }
+        .box:before {
+            position: absolute;
+            content: '';
+            left: 0;
+            bottom: 0;
+            height: 4px;
+            width: 100%;
+            border-bottom: 4px solid transparent;
+            border-left: 4px solid transparent;
+            box-sizing: border-box;
+            transform: translateX(100%);
+        }
+        .box:after {
+            position: absolute;
+            content: '';
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            border-top: 4px solid transparent;
+            border-right: 4px solid transparent;
+            box-sizing: border-box;
+            transform: translateX(-100%);
+        }
+        .box:hover {
+            box-shadow: 0 5px 15px rgba(0, 255, 117, 0.3);
+        }
+        .box:hover:before {
+            border-color: var(--primary-color);
+            height: 100%;
+            transform: translateX(0);
+            transition: .6s transform linear, .6s height linear .6s;
+        }
+        .box:hover:after {
+            border-color: var(--primary-color);
+            height: 100%;
+            transform: translateX(0);
+            transition: .6s transform linear, .6s height linear 1s;
+        }
+        .register-btn {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            color: var(--primary-color);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.6s ease;
+            border: none;
+            outline: none;
+        }
+        .box:hover .register-btn {
+            color: var(--background-color);
+            background-color: var(--primary-color);
+        }
+        .login-link {
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .login-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <%- include('partials/header', { currentPage: 'register', isLoggedIn: false }) %>
+
+    <main>
+        <section class="hero">
+            <h2>التسجيل في SYTIX</h2>
+            <p>أنشئ حسابك الآن للوصول إلى جميع ميزات حجز تذاكر المباريات</p>
+        </section>
+
+        <section class="register-form">
+            <form action="/register" method="POST">
+                <div class="form-group">
+                    <label for="username">اسم المستخدم</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">البريد الإلكتروني</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">كلمة المرور</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">تأكيد كلمة المرور</label>
+                    <input type="password" id="confirm-password" name="confirm-password" required>
+                </div>
+                <div class="box">
+                    <button type="submit" class="register-btn">التسجيل</button>
+                </div>
+            </form>
+            <div class="login-link">
+                <p>لديك حساب بالفعل؟ <a href="/login">تسجيل الدخول</a></p>
+                <p><a href="/club-registration"> مدير نادي</a></p>
+            </div>
+        </section>
+
+        <% if (messages.error) { %>
+            <div class="alert alert-danger">
+                <%= messages.error %>
+            </div>
+        <% } %>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 SYTIX. جميع الحقوق محفوظة.</p>
+    </footer>
+       
+    <script>
+        // منع ظهور المحتوى قبل تحميل الـ JavaScript
+        document.body.style.opacity = '0';
+        window.addEventListener('DOMContentLoaded', () => {
+            document.body.style.opacity = '1';
+        });
+    </script>
+    <script src="/scripts/transition.js"></script>
+</body>
+</html>

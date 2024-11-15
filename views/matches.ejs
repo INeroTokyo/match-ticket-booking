@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYTIX - نظام حجز تذاكر كرة القدم</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/header.css">
+</head>
+<body>
+    <%- include('partials/header', { currentPage: 'home', isLoggedIn: locals.isLoggedIn, is_admin: locals.is_admin }) %>
+
+
+    <main>
+        <section class="hero">
+            <h2>مرحبًا بك في SYTIX</h2>
+            <p>نظام حجز تذاكر كرة القدم الأفضل والأسهل</p>
+        </section>
+
+        <section class="match-list">
+            <% if (matches && matches.length > 0) { %>
+                <% matches.forEach(match => { %>
+                    <div class="match-card">
+                        <div class="match-card-inner">
+                            <div class="match-teams">
+                                <%= match.team1 %> <span style="color: var(--text-color);">ضد</span> <%= match.team2 %>
+                            </div>
+                            <div class="match-info">
+                                <span><i class="fas fa-calendar"></i> <%= new Date(match.date).toLocaleDateString('ar-SA', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+                                <span><i class="fas fa-clock"></i> <%= match.time %></span>
+                                <span><i class="fas fa-map-marker-alt"></i><%= match.stadium %></span>
+                            </div>
+                            <div class="match-price">
+                                <i class="fas fa-ticket-alt"></i> <%= match.price %> ر.س
+                            </div>
+                            <div class="box">
+                                <% if (isLoggedIn) { %>
+                                    <a href="/match-details/<%= match.id %>" class="book-btn">حجز تذكرة</a>
+                                <% } else { %>
+                                    <a href="/login" class="book-btn">سجل الدخول للحجز</a>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p>لا توجد مباريات قادمة حاليًا.</p>
+            <% } %>
+        </section>
+
+        <% if (messages.success) { %>
+            <div class="alert alert-success">
+                <%= messages.success %>
+            </div>
+        <% } %>
+        <% if (messages.error) { %>
+            <div class="alert alert-danger">
+                <%= messages.error %>
+            </div>
+        <% } %>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 SYTIX. جميع الحقوق محفوظة.</p>
+    </footer>
+       
+    <script>
+        // منع ظهور المحتوى قبل تحميل الـ JavaScript
+        document.body.style.opacity = '0';
+        window.addEventListener('DOMContentLoaded', () => {
+            document.body.style.opacity = '1';
+        });
+    </script><script src="/scripts/transition.js"></script>
+</body>
+</html>

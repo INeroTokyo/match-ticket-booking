@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - نظام حجز تذاكر كرة القدم</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ff1f6d;
+            --secondary-color: #4169e1;
+            --background-color: #0a0d1c;
+            --text-color: #ffffff;
+            --gold-color: #ffd700;
+            --card-background: rgba(255, 255, 255, 0.1);
+            --card-border: rgba(255, 255, 255, 0.2);
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 150px;
+            background: var(--secondary-color);
+            border-radius: 100% 100% 0 0;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1, h2 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .alert {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .alert-danger {
+            background-color: rgba(255, 0, 0, 0.1);
+            color: #ff0000;
+        }
+
+        .alert-success {
+            background-color: rgba(0, 255, 0, 0.1);
+            color: #00ff00;
+        }
+
+        section {
+            background: var(--card-background);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 0.5rem;
+            color: var(--gold-color);
+        }
+
+        input[type="text"],
+        input[type="date"],
+        input[type="time"],
+        input[type="number"],
+        select {
+            padding: 0.5rem;
+            border-radius: 5px;
+            border: 1px solid var(--card-border);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-color);
+        }
+
+        .btn-danger {
+            background-color: #ff0000;
+            color: var(--text-color);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: right;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        th {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--gold-color);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .stat-card {
+            background: var(--card-background);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            color: var(--gold-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card p {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .flatpickr-calendar {
+            direction: rtl;
+        }
+        .flatpickr-current-month {
+            font-family: 'Arial', sans-serif;
+        }
+        .numInputWrapper {
+            width: 7ch;
+        }
+        .flatpickr-day {
+            font-family: 'Arial', sans-serif;
+        }
+        .form-group input[type="text"] {
+            padding: 0.5rem;
+            border-radius: 5px;
+            border: 1px solid var(--card-border);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            font-size: 1rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        #stadium, #codeAmount {
+            width: 100%;
+            padding: 0.5rem;
+            border-radius: 5px;
+            border: 1px solid var(--card-border);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%23ffffff" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+            background-repeat: no-repeat;
+            background-position: left 0.7em top 50%;
+            background-size: 0.65em auto;
+        }
+
+        #stadium optgroup, #codeAmount option {
+            background-color: var(--background-color);
+        }
+
+        #stadium option, #codeAmount option {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        #stadium:focus, #codeAmount:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(255, 31, 109, 0.2);
+        }
+
+
+        @media screen and (max-width: 600px) {
+            table, thead, tbody, th, td, tr {
+                display: block;
+            }
+
+            thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            tr {
+                margin-bottom: 1rem;
+                border: 1px solid var(--card-border);
+                border-radius: 5px;
+                padding: 0.5rem;
+            }
+
+            td {
+                border: none;
+                position: relative;
+                padding-left: 50%;
+                text-align: left;
+            }
+
+            td:before {
+                content: attr(data-label);
+                position: absolute;
+                right: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                font-weight: bold;
+                color: var(--gold-color);
+            }
+        }
+
+        /* تعديلات على الأنماط الحالية */
+        .container {
+            max-width: 100%;
+            padding: 1rem;
+        }
+
+        section {
+            overflow-x: auto;
+        }
+
+        table {
+            min-width: 100%;
+        }
+
+        /* تحسين أنماط الأزرار للشاشات الصغيرة */
+        @media screen and (max-width: 600px) {
+            .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include('partials/header', {
+        currentPage: 'admin',
+        isLoggedIn: true,
+        is_admin: true,
+        username: 'اسم المسؤول',
+        profilePicture: '/path/to/admin/picture.jpg'
+    }) %>
+    
+    <div class="container">
+        <h1>لوحة التحكم</h1>
+        
+        <% if (messages.error) { %>
+            <div class="alert alert-danger"><%= messages.error %></div>
+        <% } %>
+        <% if (messages.success) { %>
+            <div class="alert alert-success"><%= messages.success %></div>
+        <% } %>
+
+        <section>
+            <h2>إضافة مباراة جديدة</h2>
+            <form action="/admin/add-match" method="POST">
+                <div class="form-group">
+                    <label for="team1">الفريق الأول:</label>
+                    <input type="text" id="team1" name="team1" required>
+                </div>
+                <div class="form-group">
+                    <label for="team2">الفريق الثاني:</label>
+                    <input type="text" id="team2" name="team2" required>
+                </div>
+                <div class="form-group">
+                    <label for="date">التاريخ:</label>
+                    <input type="text" id="date" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="time">الوقت:</label>
+                    <input type="text" id="time" name="time" required>
+                </div>
+                <div class="form-group">
+                    <label for="stadium">الملعب:</label>
+                    <select id="stadium" name="stadium" required>
+                        <option value="">اختر الملعب</option>
+                        <optgroup label="حلب">
+                            <option value="ملعب حلب الدولي">ملعب حلب الدولي (53,200 متفرج)</option>
+                            <option value="ملعب الحمدانية">ملعب الحمدانية (15,000 متفرج)</option>
+                        </optgroup>
+                        <optgroup label="اللاذقية">
+                            <option value="ملعب المدينة الرياضية">ملعب المدينة الرياضية (45,000 متفرج)</option>
+                            <option value="الملعب البلدي">الملعب البلدي (28,000 متفرج)</option>
+                            <option value="ملعب الفرداحة">ملعب الفرداحة (13,000 متفرج)</option>
+                        </optgroup>
+                        <optgroup label="حمص">
+                            <option value="ملعب خالد بن الوليد">ملعب خالد بن الوليد (32,000 متفرج)</option>
+                            <option value="ملعب الباسل">ملعب الباسل (25,000 متفرج)</option>
+                        </optgroup>
+                        <optgroup label="دمشق">
+                            <option value="ملعب العباسيين">ملعب العباسيين (30,000 متفرج)</option>
+                            <option value="ملعب الفيحاء">ملعب الفيحاء (15,000 متفرج)</option>
+                            <option value="ملعب الجلاء">ملعب الجلاء (15,000 متفرج)</option>
+                            <option value="ملعب تشرين">ملعب تشرين (12,000 متفرج)</option>
+                            <option value="ملعب المحافظة">ملعب المحافظة (1,000 متفرج)</option>
+                        </optgroup>
+                        <optgroup label="الحسكة">
+                            <option value="الملعب البلدي">الملعب البلدي (25,000 متفرج)</option>
+                        </optgroup>
+                        <optgroup label="حماة">
+                            <option value="الملعب البلدي">الملعب البلدي (22,000 متفرج)</option>
+                        </optgroup>
+                        <optgroup label="الرقة">
+                            <option value="الملعب البلدي">الملعب البلدي (20,000 متفرج)</option>
+                        </optgroup>
+                        <optgroup label="درعا">
+                            <option value="ملعب الباسل">ملعب الباسل (18,000 متفرج)</option>
+                        </optgroup>
+                        <optgroup label="السويداء">
+                            <option value="ملعب الباسل">ملعب الباسل (18,000 متفرج)</option>
+                        </optgroup>
+                        <optgroup label="طرطوس">
+                            <option value="ملعب بانياس">ملعب بانياس (15,000 متفرج)</option>
+                            <option value="ملعب الصالة الرياضية">ملعب الصالة الرياضية (8,000 متفرج)</option>
+                            <option value="الملعب البلدي">الملعب البلدي (1,300 متفرج)</option>
+                        </optgroup>
+                        <optgroup label="دير الزور">
+                            <option value="ملعب دير الزور">ملعب دير الزور (13,000 متفرج)</option>
+                        </optgroup>
+                        <optgroup label="جبلة">
+                            <option value="ملعب البعث">ملعب البعث (10,000 متفرج)</option>
+                        </optgroup>
+                        <optgroup label="القامشلي">
+                            <option value="ملعب السابع من نيسان">ملعب السابع من نيسان (10,000 متفرج)</option>
+                        </optgroup>
+                        <optgroup label="إدلب">
+                            <option value="استاد إدلب الرياضي">استاد إدلب الرياضي (12,000 متفرج)</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="price">سعر التذكرة العادية:</label>
+                    <input type="number" id="price" name="price" required min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="vip_price">سعر تذكرة VIP:</label>
+                    <input type="number" id="vip_price" name="vip_price" required min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="regular_tickets">عدد التذاكر العادية:</label>
+                    <input type="number" id="regular_tickets" name="regular_tickets" required min="0">
+                </div>
+                <div class="form-group">
+                    <label for="vip_tickets">عدد تذاكر VIP:</label>
+                    <input type="number" id="vip_tickets" name="vip_tickets" required min="0">
+                </div>
+                <button type="submit" class="btn btn-primary">إضافة المباراة</button>
+            </form>
+        </section>
+
+        <section>
+            <h2>المباريات الحالية</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>الفريق الأول</th>
+                        <th>الفريق الثاني</th>
+                        <th>التاريخ</th>
+                        <th>الوقت</th>
+                        <th>الملعب</th>
+                        <th>السعر العادي</th>
+                        <th>سعر VIP</th>
+                        <th>التذاكر العادية</th>
+                        <th>تذاكر VIP</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% matches.forEach(function(match) { %>
+                        <tr>
+                            <td><%= match.team1 %></td>
+                            <td><%= match.team2 %></td>
+                            <td><%= match.date %></td>
+                            <td><%= match.time %></td>
+                            <td><%= match.stadium %></td>
+                            <td><%= match.price %></td>
+                            <td><%= match.vip_price %></td>
+                            <td><%= match.regular_tickets %></td>
+                            <td><%= match.vip_tickets %></td>
+                            <td>
+                                <form action="/admin/delete-match/<%= match.id %>" method="POST" onsubmit="return confirm('هل أنت متأكد من حذف هذه المباراة؟');">
+                                    <button type="submit" class="btn btn-danger">حذف المباراة</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>توليد أكواد الشحن</h2>
+            <form action="/admin/generate-recharge-codes" method="POST">
+                <div class="form-group">
+                    <label for="codeAmount">قيمة الكود:</label>
+                    <select id="codeAmount" name="amount" required>
+                        <option value="">اختر قيمة الكود</option>
+                        <option value="10">25000 ليرة سورية</option>
+                        <option value="20">50000 ليرة سورية</option>
+                        <option value="50">75000 ليرة سورية</option>
+                        <option value="100">100000 ليرة سورية</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="codeQuantity">عدد الأكواد:</label>
+                    <input type="number" id="codeQuantity" name="quantity" required min="1" max="100" value="1">
+                </div>
+                <button type="submit" class="btn btn-primary">توليد الأكواد</button>
+            </form>
+        </section>
+
+        <section>
+            <h2>أكواد الشحن الحالية</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>الكود</th>
+                        <th>القيمة</th>
+                        <th>الحالة</th>
+                        <th>تاريخ الإنشاء</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% rechargeCodes.forEach(function(code) { %>
+                        <tr>
+                            <td><%= code.code %></td>
+                            <td>
+                                <% if (code.amount == 10) { %>
+                                    25000 ليرة سورية
+                                <% } else if (code.amount == 20) { %>
+                                    50000 ليرة سورية
+                                <% } else if (code.amount == 50) { %>
+                                    75000 ليرة سورية
+                                <% } else if (code.amount == 100) { %>
+                                    100000 ليرة سورية
+                                <% } else { %>
+                                    <%= code.amount %> ليرة
+                                <% } %>
+                            </td>
+                            <td><%= code.isUsed ? 'مستخدم' : 'غير مستخدم' %></td>
+                            <td><%= new Date(code.createdAt).toLocaleString('ar-SY') %></td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>المستخدمون النشطون وزوار الموقع</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>المستخدمون النشطون</h3>
+                    <p><%= activeUsers %></p>
+                </div>
+                <div class="stat-card">
+                    <h3>عدد زوار الموقع</h3>
+                    <p><%= visitors %></p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>قائمة المستخدمين</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>اسم المستخدم</th>
+                        <th>البريد الإلكتروني</th>
+                        <th>الرصيد</th>
+                        <th>تاريخ التسجيل</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% users.forEach(function(user) { %>
+                        <tr>
+                            <td><%= user.username %></td>
+                            <td><%= user.email %></td>
+                            <td><%= user.balance %></td>
+                            <td><%= new Date(user.created_at).toLocaleString('ar-SA') %></td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </section>
+
+        <a href="/" class="btn btn-secondary">العودة إلى الصفحة الرئيسية</a>
+    </div>
+ 
+    <script>
+        // منع ظهور المحتوى قبل تحميل الـ JavaScript
+        document.body.style.opacity = '0';
+        window.addEventListener('DOMContentLoaded', () => {
+            document.body.style.opacity = '1';
+        });
+
+        // تحسين حقل إدخال التاريخ
+        const dateInput = document.getElementById('date');
+        dateInput.type = 'text';
+        dateInput.placeholder = 'اختر التاريخ';
+        
+        // إضافة مكتبة flatpickr لاختيار التاريخ
+        const flatpickrScript = document.createElement('script');
+        flatpickrScript.src = 'https://cdn.jsdelivr.net/npm/flatpickr';
+        document.head.appendChild(flatpickrScript);
+        
+        const flatpickrCSS = document.createElement('link');
+        flatpickrCSS.rel = 'stylesheet';
+        flatpickrCSS.href = 'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css';
+        document.head.appendChild(flatpickrCSS);
+        
+        flatpickrScript.onload = function() {
+            flatpickr(dateInput, {
+                dateFormat: "Y-m-d",
+                locale: {
+                    firstDayOfWeek: 6
+                }
+            });
+        };
+
+        // تحسين حقل إدخال الوقت
+        const timeInput = document.getElementById('time');
+        timeInput.type = 'text';
+        timeInput.placeholder = 'اختر الوقت';
+        
+        flatpickrScript.onload = function() {
+            flatpickr(timeInput, {
+                enableTime: true,
+                noCalendar: true,
+                dateFormat: "H:i",
+                time_24hr: true
+            });
+            
+            flatpickr(dateInput, {
+                dateFormat: "Y-m-d",
+                locale: {
+                    firstDayOfWeek: 6
+                }
+            });
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,418 @@
+:root {
+    --primary-color: #6a1b9a;
+    --secondary-color: #9c27b0;
+    --background-color: #f5f5f5;
+    --text-color: #333;
+    --card-background: #fff;
+    --card-border: #e0e0e0;
+    --button-hover: #4a148c;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Arial', sans-serif;
+}
+
+.matches-header {
+    background: linear-gradient(rgba(106, 27, 154, 0.8), rgba(156, 39, 176, 0.8)), url('/images/stadium-background.jpg') no-repeat center center/cover;
+    color: #fff;
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.matches-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+.filter-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.filter-btn {
+    background-color: transparent;
+    border: 2px solid #fff;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.6s ease;
+}
+
+.filter-btn.active, .filter-btn:hover {
+    background-color: #fff;
+    color: var(--primary-color);
+}
+
+.matches-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.match-card {
+    background-color: var(--card-background);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.6s ease;
+    border: 1px solid var(--card-border);
+}
+
+.match-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.match-header {
+    background-color: var(--primary-color);
+    color: #fff;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.league {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.date {
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.date i {
+    font-size: 1rem;
+}
+
+.match-teams {
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.team {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.team img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.team span {
+    font-weight: bold;
+    text-align: center;
+}
+
+.match-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.time {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.vs {
+    font-size: 1rem;
+    color: #888;
+}
+
+.stadium {
+    font-size: 0.8rem;
+    color: #666;
+    text-align: center;
+}
+
+.match-footer {
+    background-color: #f9f9f9;
+    padding: 0;
+}
+
+.price-booking {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--secondary-color);
+    padding: 1rem;
+    text-align: center;
+}
+
+.box {
+    width: 100%;
+    height: 50px;
+    transition: 1s linear;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding: 0;
+    text-align: center;
+    background: transparent;
+    text-transform: uppercase;
+    font-weight: 900;
+    border-radius: 0 0 10px 10px;
+}
+
+.box:before {
+    position: absolute;
+    content: '';
+    left: 0;
+    bottom: 0;
+    height: 4px;
+    width: 100%;
+    border-bottom: 4px solid transparent;
+    border-left: 4px solid transparent;
+    box-sizing: border-box;
+    transform: translateX(100%);
+}
+
+.box:after {
+    position: absolute;
+    content: '';
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    border-top: 4px solid transparent;
+    border-right: 4px solid transparent;
+    box-sizing: border-box;
+    transform: translateX(-100%);
+}
+
+.box:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.box:hover:before {
+    border-color: var(--primary-color);
+    height: 100%;
+    transform: translateX(0);
+    transition: .6s transform linear, .6s height linear .6s;
+}
+
+.box:hover:after {
+    border-color: var(--primary-color);
+    height: 100%;
+    transform: translateX(0);
+    transition: .6s transform linear, .6s height linear 1s;
+}
+
+.book-btn {
+    color: var(--primary-color);
+    text-decoration: none;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    background: transparent;
+    width: 100%;
+    height: 100%;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.6s ease;
+}
+
+.box:hover .book-btn {
+    color: white;
+    background-color: var(--primary-color);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+}
+
+.modal.show {
+    opacity: 1;
+}
+
+.modal-content {
+    background-color: var(--card-background);
+    margin: 15% auto;
+    padding: 2rem;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 500px;
+    position: relative;
+    transform: scale(0.7);
+    opacity: 0;
+    transition: all 0.6s ease;
+}
+
+.modal.show .modal-content {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.close {
+    color: var(--text-color);
+    float: left;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.6s ease;
+}
+
+.close:hover,
+.close:focus {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid var(--card-border);
+    border-radius: 4px;
+    transition: border-color 0.6s ease;
+    background-color: var(--card-background);
+    color: var(--text-color);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+/* تنسيق الصفحة الرئيسية */
+.home-container {
+    background-color: var(--background-color);
+    padding: 2rem;
+}
+
+.home-title {
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.featured-matches {
+    background-color: var(--card-background);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+
+.featured-matches h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+/* تنسيق صفحة تسجيل الدخول والتسجيل */
+.auth-container {
+    background-color: var(--card-background);
+    border-radius: 10px;
+    padding: 2rem;
+    max-width: 400px;
+    margin: 2rem auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.auth-title {
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.auth-form input {
+    background-color: var(--background-color);
+    border: 1px solid var(--card-border);
+    color: var(--text-color);
+}
+
+.auth-form input:focus {
+    border-color: var(--primary-color);
+}
+
+.auth-submit {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.auth-submit:hover {
+    background-color: var(--button-hover);
+}
+
+/* تنسيق التذييل */
+footer {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+    .matches-header {
+        padding: 2rem 1rem;
+    }
+
+    .matches-header h1 {
+        font-size: 2rem;
+    }
+
+    .filter-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .matches-container {
+        grid-template-columns: 1fr;
+    }
+
+    .box {
+        width: 100%;
+        max-width: none;
+    }
+}

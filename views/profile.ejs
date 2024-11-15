@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الملف الشخصي - نظام حجز تذاكر كرة القدم</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ff1f6d;
+            --secondary-color: #4169e1;
+            --background-color: #0a0d1c;
+            --text-color: #ffffff;
+            --gold-color: #ffd700;
+            --card-background: rgba(255, 255, 255, 0.1);
+            --card-border: rgba(255, 255, 255, 0.2);
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 150px;
+            background: var(--secondary-color);
+            border-radius: 100% 100% 0 0;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1, h2 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .alert {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .alert-danger {
+            background-color: rgba(255, 0, 0, 0.1);
+            color: #ff0000;
+        }
+
+        .alert-success {
+            background-color: rgba(0, 255, 0, 0.1);
+            color: #00ff00;
+        }
+
+        section {
+            background: var(--card-background);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 0.5rem;
+            color: var(--gold-color);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            padding: 0.5rem;
+            border-radius: 5px;
+            border: 1px solid var(--card-border);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-color);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: right;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        th {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--gold-color);
+        }
+
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1rem;
+            display: block;
+            border: 3px solid var(--primary-color);
+        }
+
+        #imagePreview {
+            max-width: 200px;
+            max-height: 200px;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <%- include('partials/header', {
+        currentPage: 'profile',
+        isLoggedIn: true,
+        is_admin: user.is_admin,
+        username: user.username,
+        profilePicture: user.profile_picture
+    }) %>
+    
+    <div class="container">
+        <h1>الملف الشخصي</h1>
+        
+        <% if (messages.error) { %>
+            <div class="alert alert-danger"><%= messages.error %></div>
+        <% } %>
+        <% if (messages.success) { %>
+            <div class="alert alert-success"><%= messages.success %></div>
+        <% } %>
+
+        <section>
+            <h2>المعلومات الشخصية</h2>
+            <img src="<%= user.profile_picture %>" alt="الصورة الشخصية" class="profile-picture">
+            <form id="personalInfoForm">
+                <div class="form-group">
+                    <label for="username">اسم المستخدم:</label>
+                    <input type="text" id="username" name="username" value="<%= user.username %>" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">البريد الإلكتروني:</label>
+                    <input type="email" id="email" name="email" value="<%= user.email %>" required>
+                </div>
+                <div class="form-group">
+                    <label for="joinDate">تاريخ الانضمام:</label>
+                    <input type="text" id="joinDate" value="<%= new Date(user.created_at).toLocaleDateString('ar-SA') %>" readonly>
+                </div>
+                <button type="submit" class="btn btn-primary">تحديث المعلومات</button>
+            </form>
+        </section>
+
+        <section>
+            <h2>تغيير كلمة المرور</h2>
+            <form action="/change-password" method="POST">
+                <div class="form-group">
+                    <label for="currentPassword">كلمة المرور الحالية:</label>
+                    <input type="password" id="currentPassword" name="currentPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword">كلمة المرور الجديدة:</label>
+                    <input type="password" id="newPassword" name="newPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">تأكيد كلمة المرور الجديدة:</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                </div>
+                <button type="submit" class="btn btn-primary">تغيير كلمة المرور</button>
+            </form>
+        </section>
+
+        <section>
+            <h2>تغيير الصورة الشخصية</h2>
+            <form id="profilePictureForm" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="profilePicture">اختر صورة جديدة:</label>
+                    <input type="file" id="profilePicture" name="profilePicture" accept="image/*" required>
+                </div>
+                <img id="imagePreview" src="#" alt="معاينة الصورة" style="display: none;">
+                <button type="submit" class="btn btn-primary">تحديث الصورة الشخصية</button>
+            </form>
+        </section>
+
+        <section>
+            <h2>التذاكر المحجوزة</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>المباراة</th>
+                        <th>التاريخ</th>
+                        <th>الوقت</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% tickets.forEach(function(ticket) { %>
+                        <tr>
+                            <td><%= ticket.team1 %> ضد <%= ticket.team2 %></td>
+                            <td><%= new Date(ticket.date).toLocaleDateString('ar-SA') %></td>
+                            <td><%= ticket.time %></td>
+                            <td>
+                                <button onclick="printTicket('<%= ticket.id %>')" class="btn btn-secondary">طباعة التذكرة</button>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>رصيد المحفظة</h2>
+            <p>الرصيد الحالي: <%= user.balance %> ريال</p>
+            <a href="/recharge-wallet" class="btn btn-primary">شحن المحفظة</a>
+            
+            <h3>سجل المعاملات المالية</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>التاريخ</th>
+                        <th>الوصف</th>
+                        <th>المبلغ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% transactions.forEach(function(transaction) { %>
+                        <tr>
+                            <td><%= new Date(transaction.created_at).toLocaleString('ar-SA') %></td>
+                            <td><%= transaction.description %></td>
+                            <td class="<%= transaction.type === 'credit' ? 'text-success' : 'text-danger' %>">
+                                <%= transaction.type === 'credit' ? '+' : '-' %><%= transaction.amount %> ريال
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </section>
+
+        <a href="/" class="btn btn-secondary">العودة إلى الصفحة الرئيسية</a>
+    </div>
+ 
+    <script>
+        // منع ظهور المحتوى قبل تحميل الـ JavaScript
+        document.body.style.opacity = '0';
+        window.addEventListener('DOMContentLoaded', () => {
+            document.body.style.opacity = '1';
+        });
+
+        // تحديث المعلومات الشخصية
+        document.getElementById('personalInfoForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            fetch('/update-personal-info', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showAlert(data.message, 'success');
+                } else {
+                    showAlert(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showAlert('حدث خطأ أثناء تحديث المعلومات الشخصية', 'error');
+            });
+        });
+
+        // تحديث الصورة الشخصية
+        document.getElementById('profilePictureForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            fetch('/change-profile-picture', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showAlert(data.message, 'success');
+                    document.querySelector('.profile-picture').src = data.newAvatarUrl + '?t=' + new Date().getTime();
+                } else {
+                    showAlert(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showAlert('حدث خطأ أثناء تحديث الصورة الشخصية', 'error');
+            });
+        });
+
+        // معاينة الصورة قبل الرفع
+        document.getElementById('profilePicture').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('imagePreview');
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function showAlert(message, type) {
+            const alertContainer = document.createElement('div');
+            alertContainer.className = `alert alert-${type}`;
+            alertContainer.textContent = message;
+            document.querySelector('.container').insertBefore(alertContainer, document.querySelector('.container').firstChild);
+            setTimeout(() => alertContainer.remove(), 3000);
+        }
+
+        function printTicket(ticketId) {
+            window.open(`/print-ticket/${ticketId}`, '_blank');
+        }
+    </script>
+</body>
+</html>

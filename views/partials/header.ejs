@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SYTIX - نظام حجز تذاكر كرة القدم</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ff1f6d;
+            --secondary-color: #4169e1;
+            --background-color: #0a0d1c;
+            --text-color: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background-color: var(--background-color);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: 70px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            margin-right: 2rem;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            margin-right: 1rem;
+        }
+
+        .site-name {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin: 0;
+            text-shadow: 0 0 10px var(--primary-color);
+        }
+
+        nav {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul {
+            display: flex;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            justify-content: space-around;
+            width: 100%;
+        }
+
+        nav ul li {
+            margin: 0 1rem;
+        }
+
+        nav ul li a, .login-register a, .logout-link {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 1rem;
+        }
+
+        nav ul li a:hover, .login-register a:hover, .logout-link:hover {
+            color: var(--primary-color);
+        }
+
+        nav ul li a.active {
+            color: var(--primary-color);
+        }
+
+        nav ul li a i, .login-register a i, .logout-link i {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover i, .login-register a:hover i, .logout-link:hover i {
+            color: var(--primary-color);
+            transform: scale(1.2);
+            filter: drop-shadow(0 0 5px var(--primary-color));
+        }
+
+        nav ul li a span, .login-register a span, .logout-link span {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: var(--text-color);
+            padding: 0.5rem;
+            border-radius: 4px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        nav ul li a:hover span, .login-register a:hover span, .logout-link:hover span {
+            opacity: 1;
+            visibility: visible;
+            top: calc(100% + 10px);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 5px 15px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        .user-info:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 10px rgba(255, 31, 109, 0.5);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);
+        }
+
+        .user-name {
+            font-size: 1rem;
+            transition: color 0.3s ease;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .user-info:hover .user-name {
+            color: var(--primary-color);
+        }
+
+        .header-separator {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: rgba(255, 255, 255, 0.1);
+            z-index: 999;
+        }
+
+        .login-register {
+            display: flex;
+            align-items: center;
+        }
+
+        .logout-link {
+            margin-left: 15px;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                height: auto;
+                padding: 1rem 0.5rem;
+            }
+
+            .logo-container {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+
+            nav {
+                width: 100%;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+            }
+
+            nav ul li {
+                margin: 0.5rem;
+            }
+
+            nav ul li a, .login-register a, .logout-link {
+                padding: 0.3rem 0.5rem;
+            }
+
+            nav ul li a i, .login-register a i, .logout-link i {
+                font-size: 1.5rem;
+            }
+
+            nav ul li a span, .login-register a span, .logout-link span {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                background-color: transparent;
+                padding: 0;
+                margin-top: 0.3rem;
+                transform: none;
+                font-size: 0.8rem;
+            }
+
+            .header-separator {
+                top: auto;
+                bottom: 0;
+            }
+
+            .user-info, .login-register {
+                margin-top: 1rem;
+            }
+
+            .user-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .logout-link {
+                margin-left: 0;
+                margin-top: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .site-name {
+                display: none;
+            }
+
+            nav ul li a i, .login-register a i, .logout-link i {
+                font-size: 1.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="/images/logo.png" alt="شعار SYTIX" class="logo">
+                <h1 class="site-name">SYTIX</h1>
+            </div>
+            <nav>
+                <ul id="navMenu">
+                    <li><a href="/" class="active">
+                        <i class="fas fa-home"></i>
+                        <span>الرئيسية</span>
+                    </a></li>
+                    <li><a href="/matches">
+                        <i class="fas fa-futbol"></i>
+                        <span>المباريات</span>
+                    </a></li>
+                    <% if (user) { %>
+                        <li><a href="/recharge-wallet">
+                            <i class="fas fa-wallet"></i>
+                            <span>شحن المحفظة</span>
+                        </a></li>
+                    <% } %>
+                    <% if (user && user.is_admin) { %>
+                        <li><a href="/admin">
+                            <i class="fas fa-cogs"></i>
+                            <span>لوحة التحكم</span>
+                        </a></li>
+                    <% } %>
+                </ul>
+            </nav>
+            <div class="user-actions">
+                <% if (user) { %>
+                    <a href="/logout" class="logout-link" title="تسجيل الخروج">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>تسجيل الخروج</span>
+                    </a>
+                    <a href="<%= user.is_club_manager ? '/club-profile' : '/profile' %>" class="user-info">
+                        <img src="<%= user.is_club_manager ? '/images/team-logos/' + user.team_logo : (user.profile_picture || '/images/default-avatar.png') %>" 
+                             alt="<%= user.is_club_manager ? 'شعار النادي' : 'الصورة الشخصية' %>" 
+                             class="user-avatar">
+                        <span class="user-name"><%= user.username %></span>
+                    </a>
+                <% } else { %>
+                    <div class="login-register">
+                        <a href="/login" title="تسجيل الدخول">
+                            <i class="fas fa-sign-in-alt"></i>
+                            <span>تسجيل الدخول</span>
+                        </a>
+                        <a href="/register" title="التسجيل">
+                            <i class="fas fa-user-plus"></i>
+                            <span>التسجيل</span>
+                        </a>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </header>
+    <div class="header-separator"></div>
+    <main>
+        <!-- محتوى الصفحة سيتم إضافته هنا -->
+    </main>
+</body>
+</html>

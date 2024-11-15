@@ -1,0 +1,242 @@
+:root {
+    --primary-color: #ff1f6d;
+    --secondary-color: #4169e1;
+    --background-color: #0a0d1c;
+    --text-color: #ffffff;
+    --gold-color: #ffd700;
+    --card-background: rgba(255, 255, 255, 0.1);
+    --card-border: rgba(255, 255, 255, 0.2);
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 150px;
+    background: var(--secondary-color);
+    border-radius: 100% 100% 0 0;
+    opacity: 0.3;
+    z-index: -1;
+}
+
+header {
+    background: transparent;
+    padding: 1.5rem 0;
+    text-align: center;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.logo {
+    height: 40px;
+    filter: drop-shadow(0 0 10px var(--primary-color));
+}
+
+.site-name {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    margin: 0;
+}
+
+nav ul {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+nav ul li a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+}
+
+nav ul li a:hover, 
+nav ul li a.active {
+    color: var(--primary-color);
+}
+
+nav ul li a[href="/login"] {
+    border: 1px solid var(--text-color);
+    border-radius: 20px;
+}
+
+nav ul li a[href="/register"] {
+    background-color: var(--primary-color);
+    border-radius: 20px;
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.hero {
+    text-align: center;
+    padding: 4rem 2rem;
+    margin-bottom: 3rem;
+    background: none;
+}
+
+.hero h2 {
+    font-size: 4rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+}
+
+.hero p {
+    font-size: 1.5rem;
+    color: var(--gold-color);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.match-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.match-card {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    padding: 2px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+.match-card-inner {
+    background: var(--background-color);
+    border-radius: 19px;
+    padding: 2rem;
+}
+
+.match-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(255, 31, 109, 0.2);
+}
+
+.match-teams {
+    color: var(--primary-color);
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.match-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.match-info span {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.match-info i {
+    margin-left: 0.5rem;
+    color: var(--primary-color);
+}
+
+.match-price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--secondary-color);
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.box {
+    background: transparent;
+    border: 1px solid var(--primary-color);
+    border-radius: 25px;
+    overflow: hidden;
+}
+
+.book-btn {
+    display: block;
+    width: 100%;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    color: var(--text-color);
+    padding: 0.8rem 2rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.book-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+footer {
+    background: transparent;
+    color: var(--text-color);
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.alert-success {
+    background-color: rgba(0, 255, 0, 0.1);
+    color: #00ff00;
+}
+
+.alert-danger {
+    background-color: rgba(255, 0, 0, 0.1);
+    color: #ff0000;
+}
+
+@media (max-width: 768px) {
+    .hero h2 {
+        font-size: 2.5rem;
+    }
+    
+    nav ul {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .match-list {
+        grid-template-columns: 1fr;
+    }
+}

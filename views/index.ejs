@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATCH TEAM - Gaming Community</title>
+    <link rel="stylesheet" href="/styles/transition.css">
+    <link rel="stylesheet" href="/styles/header.css">
+    <style>
+        :root {
+            --primary-color: #ff1f6d;
+            --secondary-color: #4169e1;
+            --background-color: #0a0d1c;
+            --text-color: #ffffff;
+            --gold-color: #ffd700;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .logo span {
+            font-weight: bold;
+            font-size: 2.5rem;
+        }
+
+        .auth-buttons, .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .box {
+            width: 150px;
+            height: 50px;
+            transition: 1s linear;
+            position: relative;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            text-align: center;
+            background: transparent;
+            text-transform: uppercase;
+            font-weight: 900;
+            border-radius: 5px;
+            margin: 0 10px;
+        }
+
+        .box:before {
+            position: absolute;
+            content: '';
+            left: 0;
+            bottom: 0;
+            height: 4px;
+            width: 100%;
+            border-bottom: 4px solid transparent;
+            border-left: 4px solid transparent;
+            box-sizing: border-box;
+            transform: translateX(100%);
+        }
+
+        .box:after {
+            position: absolute;
+            content: '';
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            border-top: 4px solid transparent;
+            border-right: 4px solid transparent;
+            box-sizing: border-box;
+            transform: translateX(-100%);
+        }
+
+        .box:hover {
+            box-shadow: 0 5px 15px rgba(0, 255, 117, 0.3);
+        }
+
+        .box:hover:before {
+            border-color: var(--primary-color);
+            height: 100%;
+            transform: translateX(0);
+            transition: .6s transform linear, .6s height linear .6s;
+        }
+
+        .box:hover:after {
+            border-color: var(--primary-color);
+            height: 100%;
+            transform: translateX(0);
+            transition: .6s transform linear, .6s height linear 1s;
+        }
+
+        .book-btn {
+            color: var(--primary-color);
+            text-decoration: none;
+            cursor: pointer;
+            outline: none;
+            border: none;
+            background: transparent;
+            width: 100%;
+            height: 100%;
+            font-size: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.6s ease;
+        }
+
+        .box:hover .book-btn {
+            color: var(--background-color);
+            background-color: var(--primary-color);
+        }
+
+        main {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .content {
+            display: flex;
+            gap: 2rem;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .text-content {
+            flex: 1;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            color: var(--gold-color);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .star-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .star-bg {
+            width: 300px;
+            height: 300px;
+            background-color: var(--secondary-color);
+            border-radius: 50%;
+            opacity: 0.5;
+            position: absolute;
+        }
+
+        .star {
+            width: 200px;
+            height: 200px;
+            fill: var(--primary-color);
+            position: relative;
+            z-index: 1;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .wave {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background-color: var(--secondary-color);
+            opacity: 0.3;
+            border-top-left-radius: 100% 100%;
+            border-top-right-radius: 100% 100%;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .star-container {
+                order: -1;
+            }
+
+            .star-bg, .star {
+                width: 200px;
+                height: 200px;
+            }
+        }
+
+        .box.white-btn {
+            border: 1px solid var(--text-color);
+        }
+
+        .box.white-btn .book-btn {
+            color: var(--text-color);
+        }
+
+        .box.white-btn:hover .book-btn {
+            color: var(--background-color);
+            background-color: var(--text-color);
+        }
+
+        .box.white-btn:hover:before,
+        .box.white-btn:hover:after {
+            border-color: var(--text-color);
+        }
+
+        header .box {
+            width: 130px;
+            height: 40px;
+        }
+
+        header .book-btn {
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    
+    <%- include('partials/header', {currentPage: 'index',isLoggedIn: true,is_admin: false, username: 'اسم المستخدم',profilePicture: '/path/to/profile/picture.jpg' }) %>
+    <main>
+        <div class="content">
+            <div class="text-content">
+                <h1>DETOXIFY YOUR GAME</h1>
+                <h2>ابحث عن مباراتك المفضلة</h2>
+                <p>انضم إلى مجتمعنا حيث يمكنك حجز تذاكر مبارياتك المفضلة بسهولة وأمان. سجل الآن وابدأ رحلتك في عالم كرة القدم المثير.</p>
+                <div class="cta-buttons">
+                    <div class="box">
+                        <a href="/matches" class="book-btn">هيا نبدأ</a>
+                    </div>
+                    <div class="box white-btn">
+                        <a href="/about" class="book-btn">اعرف المزيد</a>
+                    </div>
+                </div>
+            </div>
+            <div class="star-container">
+                <div class="star-bg"></div>
+                <svg class="star" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                </svg>
+            </div>
+        </div>
+    </main>
+
+    <div class="wave"></div>
+   
+    <script>
+        // منع ظهور المحتوى قبل تحميل الـ JavaScript
+        document.body.style.opacity = '0';
+        window.addEventListener('DOMContentLoaded', () => {
+            document.body.style.opacity = '1';
+        });
+    </script> <script src="/scripts/transition.js"></script>
+
+</body>
+</html>

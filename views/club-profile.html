@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الصفحة الشخصية لمدير النادي - SYTIX</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #ff1f6d;
+            --secondary-color: #4169e1;
+            --background-color: #0a0d1c;
+            --text-color: #ffffff;
+            --gold-color: #ffd700;
+            --card-background: rgba(255, 255, 255, 0.1);
+            --card-border: rgba(255, 255, 255, 0.2);
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            background: var(--card-background);
+            border-radius: 10px;
+            padding: 1.5rem;
+            height: fit-content;
+        }
+
+        .main-content {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--card-background);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+
+        h1, h2, h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 3px solid var(--gold-color);
+        }
+
+        .profile-info h2 {
+            color: var(--gold-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-info p {
+            margin: 0.25rem 0;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: var(--text-color);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+        }
+
+        .btn-danger {
+            background-color: #ff0000;
+            color: var(--text-color);
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 0.5rem;
+            color: var(--gold-color);
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        input[type="file"],
+        select {
+            padding: 0.5rem;
+            border-radius: 5px;
+            border: 1px solid var(--card-border);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: right;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        th {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--gold-color);
+        }
+
+        .alert {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .alert-danger {
+            background-color: rgba(255, 0, 0, 0.1);
+            color: #ff0000;
+        }
+
+        .alert-success {
+            background-color: rgba(0, 255, 0, 0.1);
+            color: #00ff00;
+        }
+
+        #imagePreview {
+            max-width: 100px;
+            max-height: 100px;
+            margin-top: 10px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: var(--background-color);
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid var(--card-border);
+            width: 50%;
+            border-radius: 10px;
+        }
+
+        .close {
+            color: #aaa;
+            float: left;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            .modal-content {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <%- include('partials/header', { currentPage: 'club-profile', isLoggedIn: true }) %>
+
+    <div class="container">
+        <div class="dashboard">
+            <aside class="sidebar">
+                <div class="profile-header">
+                    <img src="<%= manager.team_logo || '/images/default-team-logo.png' %>" alt="شعار النادي" class="profile-image">
+                    <div class="profile-info">
+                        <h2><%= manager.club_name %></h2>
+                        <p><%= manager.username %></p>
+                        <p><%= manager.email %></p>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-block" onclick="toggleEditProfile()">تعديل المعلومات الشخصية</button>
+                <button class="btn btn-secondary btn-block" onclick="showAddPlayerModal()">إضافة لاعب جديد</button>
+            </aside>
+
+            <main class="main-content">
+                <% if (messages.error) { %>
+                    <div class="alert alert-danger"><%= messages.error %></div>
+                <% } %>
+                <% if (messages.success) { %>
+                    <div class="alert alert-success"><%= messages.success %></div>
+                <% } %>
+
+                <section id="editProfileSection" class="card" style="display: none;">
+                    <h2>تعديل المعلومات الشخصية</h2>
+                    <form id="editProfileForm" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="editUsername">اسم المستخدم</label>
+                            <input type="text" id="editUsername" name="username" value="<%= manager.username %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editEmail">البريد الإلكتروني</label>
+                            <input type="email" id="editEmail" name="email" value="<%= manager.email %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editClubName">اسم النادي</label>
+                            <input type="text" id="editClubName" name="club_name" value="<%= manager.club_name %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editClubAddress">عنوان النادي</label>
+                            <input type="text" id="editClubAddress" name="club_address" value="<%= manager.club_address %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editStadiumAddress">عنوان الملعب</label>
+                            <input type="text" id="editStadiumAddress" name="stadium_address" value="<%= manager.stadium_address %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editTeamLogo">شعار النادي</label>
+                            <input type="file" id="editTeamLogo" name="team_logo" accept="image/*">
+                            <img id="imagePreview" src="<%= manager.team_logo || '/images/default-team-logo.png' %>" alt="معاينة الشعار">
+                        </div>
+                        <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+                    </form>
+                </section>
+
+                <section class="card">
+                    <h2>معلومات النادي</h2>
+                    <p><strong>عنوان النادي:</strong> <%= manager.club_address %></p>
+                    <p><strong>عنوان الملعب:</strong> <%= manager.stadium_address %></p>
+                </section>
+
+                <section class="card">
+                    <h2>إدارة اللاعبين</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>الاسم</th>
+                                <th>المركز</th>
+                                <th>مدة العقد</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="playersTableBody">
+                            <% players.forEach(player => { %>
+                                <tr data-player-id="<%= player.id %>">
+                                    <td><%= player.name %></td>
+                                    <td><%= player.position %></td>
+                                    <td><%= player.contract_duration %> سنة</td>
+                                    <td>
+                                        <button class="btn btn-secondary" onclick="editPlayer(<%= player.id %>)">تعديل</button>
+                                        <button class="btn btn-danger" onclick="deletePlayer(<%= player.id %>)">حذف</button>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </section>
+
+                <section class="card">
+                    <h2>المباريات القادمة</h2>
+                    <% if (matches && matches.length > 0) { %>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>التاريخ</th>
+                                    <th>الوقت</th>
+                                    <th>الفريق الأول</th>
+                                    <th>الفريق الثاني</th>
+                                    <th>الملعب</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% matches.forEach(function(match) { %>
+                                    <tr>
+                                        <td><%= new Date(match.date).toLocaleDateString('ar-SA') %></td>
+                                        <td><%= match.time %></td>
+                                        <td><%= match.team1 %></td>
+                                        <td><%= match.team2 %></td>
+                                        <td><%= match.stadium %></td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    <% } else { %>
+                        <p>لا توجد مباريات قادمة حاليًا.</p>
+                    <% } %>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <div id="playerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle">إضافة/تعديل لاعب</h2>
+            <form id="playerForm">
+                <input type="hidden" id="playerId" name="id">
+                <div class="form-group">
+                    <label for="playerName">اسم اللاعب</label>
+                    <input type="text" id="playerName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="playerPosition">المركز</label>
+                    <input type="text" id="playerPosition" name="position" required>
+                </div>
+                <div class="form-group">
+                    <label for="contractDuration">مدة العقد (بالسنوات)</label>
+                    <input type="number" id="contractDuration" name="contract_duration" required>
+                </div>
+                <button type="submit" class="btn btn-primary">حفظ</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('playerModal');
+        const playerForm = document.getElementById('playerForm');
+        const modalTitle = document.getElementById('modalTitle');
+        const editProfileForm = document.getElementById('editProfileForm');
+        const editProfileSection = document.getElementById('editProfileSection');
+
+        function toggleEditProfile() {
+            editProfileSection.style.display = editProfileSection.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function showAddPlayerModal() {
+            modalTitle.textContent = 'إضافة لاعب جديد';
+            playerForm.reset();
+            document.getElementById('playerId').value = '';
+            modal.style.display = 'block';
+        }
+
+        function editPlayer(playerId) {
+            modalTitle.textContent = 'تعديل بيانات اللاعب';
+            const row = document.querySelector(`tr[data-player-id="${playerId}"]`);
+            document.getElementById('playerId').value = playerId;
+            document.getElementById('playerName').value = row.cells[0].textContent;
+            document.getElementById('playerPosition').value = row.cells[1].textContent;
+            document.getElementById('contractDuration').value = parseInt(row.cells[2].textContent);
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        function deletePlayer(playerId) {
+            if (confirm('هل أنت متأكد من حذف هذا اللاعب؟')) {
+                fetch(`/delete-player/${playerId}`, { method: 'POST' })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.querySelector(`tr[data-player-id="${playerId}"]`).remove();
+                            alert('تم حذف اللاعب بنجاح');
+                        } else {
+                            alert('حدث خطأ أثناء حذف اللاعب');
+                        }
+                    })
+                    .catch(() => alert('حدث خطأ أثناء حذف اللاعب'));
+            }
+        }
+
+        playerForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const playerId = document.getElementById('playerId').value;
+            const url = playerId ? `/edit-player/${playerId}` : '/add-player';
+            const formData = new FormData(playerForm);
+
+            fetch(url, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    closeModal();
+                    location.reload();
+                } else {
+                    alert('حدث خطأ أثناء حفظ بيانات اللاعب');
+                }
+            })
+            .catch(() => alert('حدث خطأ أثناء حفظ بيانات اللاعب'));
+        });
+
+        document.getElementById('editTeamLogo').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('imagePreview').src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        editProfileForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+
+            fetch('/update-club-profile', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('تم تحديث المعلومات بنجاح');
+                    location.reload();
+                } else {
+                    alert('حدث خطأ أثناء تحديث المعلومات');
+                }
+            })
+            .catch(() => alert('حدث خطأ أثناء تحديث المعلومات'));
+        });
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        document.body.style.opacity = '0';
+        window.addEventListener('DOMContentLoaded', () => {
+            document.body.style.opacity = '1';
+        });
+
+        document.getElementById('addPlayerForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const formData = new FormData(this);
+
+  fetch('/add-player', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      alert('تم إضافة اللاعب بنجاح');
+      // تحديث واجهة المستخدم هنا
+    } else {
+      alert('حدث خطأ: ' + (data.message || 'فشل في إضافة اللاعب'));
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('حدث خطأ أثناء إضافة اللاعب');
+  });
+});
+        
+    </script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شحن المحفظة - نظام حجز تذاكر كرة القدم</title>
+    <link rel="stylesheet" href="/styles/main.css">
+    <style>
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+        }
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        .alert-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+    </style>
+</head>
+<body>
+    <%- include('partials/header', { currentPage: 'home', isLoggedIn: locals.isLoggedIn, is_admin: locals.is_admin }) %>
+
+    <div class="container">
+        <h1>شحن المحفظة</h1>
+        
+        <% if (messages.error) { %>
+            <div class="alert alert-danger"><%= messages.error %></div>
+        <% } %>
+        <% if (messages.success) { %>
+            <div class="alert alert-success"><%= messages.success %></div>
+        <% } %>
+
+        <p>رصيد محفظتك الحالي: <%= walletBalance %> ريال</p>
+
+        <form action="/use-recharge-code" method="POST">
+            <div class="form-group">
+                <label for="code">أدخل كود بطاقة الشحن:</label>
+                <input type="text" id="code" name="code" required placeholder="أدخل كود الشحن هنا" maxlength="8">
+            </div>
+            <button type="submit" class="btn">شحن المحفظة</button>
+        </form>
+
+        <p>ملاحظة: كود الشحن يتكون من 8 أحرف وأرقام.</p>
+
+        <a href="/matches" class="btn btn-secondary">العودة إلى المباريات</a>
+    </div>
+       
+    <script>
+        // منع ظهور المحتوى قبل تحميل الـ JavaScript
+        document.body.style.opacity = '0';
+        window.addEventListener('DOMContentLoaded', () => {
+            document.body.style.opacity = '1';
+        });
+
+        // التحقق من صحة كود الشحن
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const codeInput = document.getElementById('code');
+            if (!/^[A-Z0-9]{8}$/.test(codeInput.value)) {
+                e.preventDefault();
+                alert('الرجاء إدخال كود شحن صحيح مكون من 8 أحرف وأرقام.');
+            }
+        });
+    </script>
+</body>
+</html>
